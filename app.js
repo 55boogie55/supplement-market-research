@@ -318,6 +318,49 @@
     answers={}; currentStep=0;submitted=false; submissionId=makeSubmissionId(); persist();
     renderStep(); experience.scrollTo({top:0,behavior:'smooth'});
   }
+  // Scroll inercial suave apenas com roda de rato tradicional na landing.
+  // Trackpads, toque, teclado e o scroll dentro do quiz mantêm o comportamento nativo.
+  if (!reducedMotion) {
+    let scrollTarget = window.scrollY;
+    let scrollFrame = 0;
+    const stopSmoothScroll = () => {
+      if (scrollFrame) cancelAnimationFrame(scrollFrame);
+      scrollFrame = 0;
+      scrollTarget = window.scrollY;
+    };
+    function smoothScrollFrame() {
+      const gap = scrollTarget - window.scrollY;
+      if (Math.abs(gap) < 0.8) {
+        window.scrollTo({top:scrollTarget,behavior:'instant'});
+        scrollFrame = 0;
+        return;
+      }
+      window.scrollTo({top:window.scrollY + gap * 0.18,behavior:'instant'});
+      scrollFrame = requestAnimationFrame(smoothScrollFrame);
+    }
+    window.addEventListener('wheel', event => {
+      if (open || event.ctrlKey || event.metaKey || event.defaultPrevented) return;
+      if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+      // Deltas pequenos/fracionários são comuns em trackpads precisos.
+      if (event.deltaMode === 0 && (Math.abs(event.deltaY) < 60 ||
+          !Number.isInteger(event.deltaY))) {
+        stopSmoothScroll();
+        return;
+      }
+      event.preventDefault();
+      const unit = event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? innerHeight : 1;
+      const limit = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+      scrollTarget = Math.max(0, Math.min(limit,
+        (scrollFrame ? scrollTarget : window.scrollY) + event.deltaY * unit));
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(smoothScrollFrame);
+    }, {passive:false});
+    document.addEventListener('keydown', event => {
+      if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(event.key))
+        stopSmoothScroll();
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(link =>
+      link.addEventListener('click',stopSmoothScroll));
+  }
   document.querySelectorAll('[data-start]').forEach(button=>button.addEventListener('click',event=>openExperience(event)));
   closeButton.addEventListener('click',()=>closeExperience());
   back.addEventListener('click',()=>switchStep(currentStep-1));

@@ -381,3 +381,70 @@ html { scroll-padding-top: 32px; }
   .option .option-art,.option .option-orbit {animation:none!important;}
   .option,.option::before,.option::after,.float-bubble,.float-bubble::before {transition:none!important;}
 }
+
+
+/* ==============================================================
+   V10 — APENAS 2 AJUSTES: hover de botões normais e scroll.
+   As regras e as animações .option / .float-bubble ficam intactas.
+   ============================================================== */
+
+/* O próprio círculo de cor que já existia no CTA recebe agora um
+   degradê, e a cor do texto acompanha a expansão suavemente. */
+.start-button {
+  transition:transform .75s var(--ease),box-shadow .9s ease,
+             color .85s ease,background-color .85s ease;
+}
+.start-button::before {
+  background:linear-gradient(125deg,#30201d 5%,#704735 57%,#ac7757 100%);
+  transition:transform 1.12s cubic-bezier(.16,1,.3,1);
+}
+.start-button:hover::before {transform:translate(-50%,-50%) scale(35);}
+.start-button:hover {color:#fff8f0;}
+.start-arrow {transition:transform .85s var(--ease),background-color .8s ease,color .8s ease;}
+
+/* Os restantes botões recebem uma camada em degradê cuja opacidade é
+   animada; não substituímos abruptamente a cor do fundo no :hover. */
+.nav-join,.close-button,.back-button,.review-edit,.retry-button,
+.how button,.submit-button {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  transition:color .85s ease,border-color .85s ease,
+             background-color .85s ease,box-shadow .85s ease,
+             transform .65s var(--ease);
+}
+.nav-join::before,.close-button::before,.back-button::before,
+.review-edit::before,.retry-button::before,.how button::before,
+.submit-button::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(125deg,#e7a175 5%,#f4b285 53%,#ffdbb8 100%);
+  opacity:0;
+  z-index:-1;
+  pointer-events:none;
+  transition:opacity .9s cubic-bezier(.16,1,.3,1);
+}
+.nav-join:hover::before,.close-button:hover::before,.back-button:hover::before,
+.review-edit:hover::before,.retry-button:hover::before,.how button:hover::before,
+.submit-button:not(:disabled):hover::before {opacity:1;}
+.nav-join:hover,.close-button:hover,.back-button:hover,
+.review-edit:hover,.retry-button:hover {
+  background-color:transparent;
+  color:#231716;
+}
+/* O botão de texto ganha uma luz subtil, não um bloco de cor. */
+.how button::before {background:linear-gradient(110deg,transparent,#f4b28530,transparent);}
+.how button:hover {color:#ffdbb8;}
+/* A cor dos botões de submissão também transita sem saltos. */
+.submit-button:not(:disabled):hover {background-color:#f4b285;color:#241818;}
+
+@media (prefers-reduced-motion:reduce) {
+  .start-button,.start-button::before,.start-arrow,
+  .nav-join,.close-button,.back-button,.review-edit,.retry-button,
+  .how button,.submit-button,
+  .nav-join::before,.close-button::before,.back-button::before,
+  .review-edit::before,.retry-button::before,.how button::before,
+  .submit-button::before {transition:none!important;}
+}
