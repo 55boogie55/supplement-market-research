@@ -196,7 +196,6 @@
       await animation.finished.catch(()=>{});
       animation.cancel();
     }
-    stopHoverMotion();
     currentStep = Math.max(0,Math.min(next,steps.length));
     persist();
     renderStep();
@@ -305,7 +304,6 @@
     if (!open) return;
     open=false;
     busy=false;
-    stopHoverMotion();
     experience.classList.remove('is-visible','can-hover');
     experience.setAttribute('aria-hidden','true');
     document.body.classList.remove('quiz-open');
@@ -318,96 +316,20 @@
     answers={}; currentStep=0;submitted=false; submissionId=makeSubmissionId(); persist();
     renderStep(); experience.scrollTo({top:0,behavior:'smooth'});
   }
-  // Scroll inercial suave apenas com roda de rato tradicional na landing.
-  // Trackpads, toque, teclado e o scroll dentro do quiz mantêm o comportamento nativo.
-  if (!reducedMotion) {
-    let scrollTarget = window.scrollY;
-    let scrollFrame = 0;
-    const stopSmoothScroll = () => {
-      if (scrollFrame) cancelAnimationFrame(scrollFrame);
-      scrollFrame = 0;
-      scrollTarget = window.scrollY;
-    };
-    function smoothScrollFrame() {
-      const gap = scrollTarget - window.scrollY;
-      if (Math.abs(gap) < 0.8) {
-        window.scrollTo({top:scrollTarget,behavior:'instant'});
-        scrollFrame = 0;
-        return;
-      }
-      window.scrollTo({top:window.scrollY + gap * 0.18,behavior:'instant'});
-      scrollFrame = requestAnimationFrame(smoothScrollFrame);
-    }
-    window.addEventListener('wheel', event => {
-      if (open || event.ctrlKey || event.metaKey || event.defaultPrevented) return;
-      if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
-      // Deltas pequenos/fracionários são comuns em trackpads precisos.
-      if (event.deltaMode === 0 && (Math.abs(event.deltaY) < 60 ||
-          !Number.isInteger(event.deltaY))) {
-        stopSmoothScroll();
-        return;
-      }
-      event.preventDefault();
-      const unit = event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? innerHeight : 1;
-      const limit = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-      scrollTarget = Math.max(0, Math.min(limit,
-        (scrollFrame ? scrollTarget : window.scrollY) + event.deltaY * unit));
-      if (!scrollFrame) scrollFrame = requestAnimationFrame(smoothScrollFrame);
-    }, {passive:false});
-    document.addEventListener('keydown', event => {
-      if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(event.key))
-        stopSmoothScroll();
-    });
-    document.querySelectorAll('a[href^="#"]').forEach(link =>
-      link.addEventListener('click',stopSmoothScroll));
-  }
   document.querySelectorAll('[data-start]').forEach(button=>button.addEventListener('click',event=>openExperience(event)));
   closeButton.addEventListener('click',()=>closeExperience());
   back.addEventListener('click',()=>switchStep(currentStep-1));
-  // A luz e a ilustração acompanham o cursor com inércia (sem saltos de cor).
-  // Há um único requestAnimationFrame ativo e pára quando o cursor sai do cartão.
-  let activeHoverCard = null;
-  let hoverFrame = 0;
-  const pointer = { x:72, y:48, px:0, py:0, tx:72, ty:48, tpx:0, tpy:0 };
-  function stopHoverMotion() {
-    if (hoverFrame) cancelAnimationFrame(hoverFrame);
-    hoverFrame = 0;
-    activeHoverCard = null;
-  }
-  function animateHoverMotion() {
-    hoverFrame = 0;
-    if (!activeHoverCard || !open || reducedMotion) return;
-    const ease = 0.13;
-    for (const [key, target] of [['x','tx'],['y','ty'],['px','tpx'],['py','tpy']]) {
-      pointer[key] += (pointer[target] - pointer[key]) * ease;
-    }
-    activeHoverCard.style.setProperty('--mx', `${pointer.x.toFixed(2)}%`);
-    activeHoverCard.style.setProperty('--my', `${pointer.y.toFixed(2)}%`);
-    activeHoverCard.style.setProperty('--px', `${pointer.px.toFixed(2)}px`);
-    activeHoverCard.style.setProperty('--py', `${pointer.py.toFixed(2)}px`);
-    if (['x','y','px','py'].some((key,i) =>
-      Math.abs(pointer[key] - pointer[['tx','ty','tpx','tpy'][i]]) > 0.07)) {
-      hoverFrame = requestAnimationFrame(animateHoverMotion);
-    }
-  }
-  experience.addEventListener('pointermove', event => {
-    if (event.pointerType === 'touch' || reducedMotion) return;
+  experience.addEventListener('pointermove',event=>{
+    if (event.pointerType==='touch') return;
     experience.classList.add('can-hover');
-    const card = event.target.closest('.option');
-    if (!card) { stopHoverMotion(); return; }
-    if (card !== activeHoverCard) {
-      stopHoverMotion();
-      activeHoverCard = card;
-      pointer.x=72; pointer.y=48; pointer.px=0; pointer.py=0;
-    }
-    const r = card.getBoundingClientRect();
-    pointer.tx = Math.max(0, Math.min(100,(event.clientX-r.left)/r.width*100));
-    pointer.ty = Math.max(0, Math.min(100,(event.clientY-r.top)/r.height*100));
-    pointer.tpx = (pointer.tx/100-.5)*8;
-    pointer.tpy = (pointer.ty/100-.5)*6;
-    if (!hoverFrame) hoverFrame = requestAnimationFrame(animateHoverMotion);
-  }, {passive:true});
-  experience.addEventListener('pointerleave', stopHoverMotion);
+    const card=event.target.closest('.option');
+    if (!card) return;
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',`${((event.clientX-r.left)/r.width*100).toFixed(1)}%`);
+    card.style.setProperty('--my',`${((event.clientY-r.top)/r.height*100).toFixed(1)}%`);
+    card.style.setProperty('--px',`${((event.clientX-r.left)/r.width-.5)*9}px`);
+    card.style.setProperty('--py',`${((event.clientY-r.top)/r.height-.5)*7}px`);
+  },{passive:true});
   scene.addEventListener('click',event=>{
     const choice=event.target.closest('[data-choice]');
     const edit=event.target.closest('[data-edit-step]');
