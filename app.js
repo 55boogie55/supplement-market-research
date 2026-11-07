@@ -318,6 +318,32 @@
     answers={}; currentStep=0;submitted=false; submissionId=makeSubmissionId(); persist();
     renderStep(); experience.scrollTo({top:0,behavior:'smooth'});
   }
+  // Suavização discreta do scroll de roda de rato na landing.
+  // Não interfere com trackpads, toque, zoom ou o scroll interno do quiz.
+  if (!reducedMotion) {
+    let targetScroll=window.scrollY, scrollRaf=0;
+    const step=()=>{
+      const delta=targetScroll-window.scrollY;
+      if (Math.abs(delta)<.65) {window.scrollTo(0,targetScroll);scrollRaf=0;return;}
+      window.scrollTo(0,window.scrollY+delta*.16);
+      scrollRaf=requestAnimationFrame(step);
+    };
+    window.addEventListener('wheel',event=>{
+      if (open || event.ctrlKey || event.metaKey || event.defaultPrevented) return;
+      if (event.target.closest('[data-native-scroll]')) return;
+      // Trackpads enviam deltas pequenos/fracionários: manter comportamento nativo.
+      if (event.deltaMode===0 && (Math.abs(event.deltaY)<55 || !Number.isInteger(event.deltaY))) {
+        if(scrollRaf){cancelAnimationFrame(scrollRaf);scrollRaf=0;}
+        targetScroll=window.scrollY;return;
+      }
+      if(Math.abs(event.deltaX)>Math.abs(event.deltaY)) return;
+      event.preventDefault();
+      const distance=event.deltaY*(event.deltaMode===1?17:event.deltaMode===2?innerHeight:1);
+      const limit=Math.max(0,document.documentElement.scrollHeight-innerHeight);
+      targetScroll=Math.max(0,Math.min(limit,(scrollRaf?targetScroll:window.scrollY)+distance));
+      if(!scrollRaf) scrollRaf=requestAnimationFrame(step);
+    },{passive:false});
+  }
   document.querySelectorAll('[data-start]').forEach(button=>button.addEventListener('click',event=>openExperience(event)));
   closeButton.addEventListener('click',()=>closeExperience());
   back.addEventListener('click',()=>switchStep(currentStep-1));

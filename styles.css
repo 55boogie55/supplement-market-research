@@ -381,3 +381,48 @@ html { scroll-padding-top: 32px; }
   .option .option-art,.option .option-orbit {animation:none!important;}
   .option,.option::before,.option::after,.float-bubble,.float-bubble::before {transition:none!important;}
 }
+
+/* V11 — CTA: fundo estável, luz difusa e transições sem troca súbita de cor. */
+.start-button {
+  background:#efb187;
+  color:#211716;
+  transition:transform .75s cubic-bezier(.2,.75,.2,1),
+             box-shadow .85s ease, border-color .75s ease;
+  transform:translate3d(0,0,0);
+}
+.start-button::before {
+  inset:-75%;left:auto;top:auto;width:auto;height:auto;
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,rgba(255,244,221,.58) 0%,rgba(255,217,183,.22) 28%,transparent 61%);
+  transform:translate3d(-12%,15%,0) scale(.75);
+  opacity:0;
+  transition:opacity 1.05s ease,transform 1.3s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;
+  z-index:-1;
+}
+.start-button:hover::before {
+  transform:translate3d(4%,-5%,0) scale(1.1);
+  opacity:1;
+}
+.start-button:hover {
+  color:#211716;
+  background:#efb187;
+  transform:translate3d(0,-4px,0);
+  box-shadow:0 24px 65px rgba(229,157,115,.23),0 15px 45px #0005;
+}
+.start-button .start-label {transition:transform .8s cubic-bezier(.16,1,.3,1);}
+.start-button:hover .start-label {transform:translate3d(3px,0,0);}
+.start-arrow {
+  transition:transform .9s cubic-bezier(.16,1,.3,1),background .85s ease,color .85s ease,box-shadow .85s ease;
+}
+.start-button:hover .start-arrow {
+  transform:rotate(45deg) scale(1.06);
+  background:#34221e;color:#ffd5b7;
+  box-shadow:0 0 25px rgba(255,237,212,.2);
+}
+/* Scroll suave para links e deslocações programáticas. */
+html {scroll-behavior:smooth;scroll-padding-top:90px;}
+@media(prefers-reduced-motion:reduce) {
+  html {scroll-behavior:auto;}
+  .start-button,.start-button::before,.start-arrow,.start-label {transition:none!important;}
+}
