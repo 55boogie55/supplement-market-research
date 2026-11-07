@@ -1,37 +1,77 @@
-# FORM / LAB V8 — um único HTML + questionário animado + Supabase
+# FORM / LAB V9 — quiz numa só página e ligação Supabase corrigida
 
-**O site inteiro usa APENAS `index.html`.** `styles.css` e `app.js` são ficheiros de apoio, não páginas adicionais. O botão **Começar a escolher** abre o quiz em ecrã completo **na mesma aba**, sem recarregar a página. O botão Fechar regressa à landing e a tecla Escape também fecha a experiência.
+**Um único HTML:** `index.html`. O CSS e o JavaScript ficam em `styles.css` e `app.js`, e as ilustrações na pasta `assets/`. Não há `quiz.html`.
 
-## Estrutura
+## O que mudou na V9
 
-```text
-index.html             ← única página HTML
-styles.css             ← cores, responsividade, transições e microinterações
-app.js                 ← oito etapas, revisão e envio
-config.js              ← URL do Supabase + chave PÚBLICA (edita este ficheiro)
-supabase-setup.sql     ← cria uma tabela nova e o endpoint RPC
-assets/                ← 4 embalagens + 28 ilustrações SVG originais
-.gitignore
-README.md
+- A luz surge **gradualmente** sobre os cartões sem os transformar instantaneamente em pêssego. A cor base mantém-se escura.
+- Ilustrações com movimento orgânico, órbitas lentas, microinteração ao mover o rato e animação de seleção subtil.
+- O site respeita `prefers-reduced-motion` e adapta-se a telemóveis.
+- **Supabase:** aceita tanto o Project URL (`https://ID.supabase.co`) como o Data API URL (`https://ID.supabase.co/rest/v1/`) sem repetir `/rest/v1/`.
+- Mensagens de erro distintas para `config.js` ausente, valores de exemplo, URL inválido, chave inválida e erros HTTP do Supabase.
+- URLs de `config.js`, `app.js` e `styles.css` têm versão nova (`?v=9.1`) para evitar usar ficheiros antigos em cache.
+
+## Ficheiros incluídos
+
+- `index.html` — landing page e quiz de oito perguntas no mesmo documento.
+- `styles.css` — identidade visual, animações e responsividade.
+- `app.js` — perguntas, transições, navegação, revisão e POST à função RPC.
+- `assets/*.svg` — imagens ilustradas usadas ao longo das perguntas.
+- `config.js` — **já contém o Project URL e a publishable key pública fornecidos pelo dono do projeto**. Não guardes neste ficheiro segredos.
+- `config.example.js` — valores de exemplo, apenas como referência.
+- `supabase-setup.sql` — cria `public.form_lab_responses` e `public.submit_form_lab_response`.
+
+## IMPORTANTE: não basta atualizar config.js
+
+O site publicado tem de conter **todos** estes ficheiros atualizados na mesma branch e pasta:
+
+1. `index.html`
+2. `app.js`
+3. `styles.css`
+4. `config.js`
+5. `assets/` (as imagens necessárias)
+
+`index.html` agora carrega `config.js?v=9.1` **antes** de `app.js?v=9.1`.
+
+## Configuração Supabase
+
+Este pacote foi preparado com o URL público informado pelo dono do projeto:
+
+```js
+window.FORM_LAB_CONFIG = {
+  SUPABASE_URL: 'https://qtrmxooicythgpqfqkbg.supabase.co',
+  SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_…' // o valor completo está no config.js
+};
 ```
 
-## Antes de publicar: configurar o Supabase
+A API de envio é:
 
-1. Abre o teu projeto em https://supabase.com/dashboard.
-2. Vai a **SQL Editor** > **New query**.
-3. Copia **todo** o conteúdo de `supabase-setup.sql` e clica em **Run**. O código cria `public.form_lab_responses` e a função `public.submit_form_lab_response`. Não modifica a antiga função `submit_survey_response` nem as tabelas anteriores.
-4. Em **Connect** ou **Project Settings > API Keys**, copia o **Project URL** (exemplo `https://abcxyz.supabase.co`) e a **Publishable Key** (`sb_publishable_...`).
-5. Abre `config.js` e troca os dois valores de exemplo pelos do teu projeto. O ficheiro tem de existir **publicado** junto do HTML (não pode estar no `.gitignore`).
-6. **Nunca** uses `sb_secret_...`, `service_role`, passwords ou tokens de utilizador neste ficheiro. A publishable key foi concebida para frontend; a proteção está nos grants/RLS e na função SQL que validam as respostas.
+```
+POST https://qtrmxooicythgpqfqkbg.supabase.co/rest/v1/rpc/submit_form_lab_response
+```
 
-O frontend faz um pedido POST a `https://TEU-PROJETO.supabase.co/rest/v1/rpc/submit_form_lab_response` com a chave no cabeçalho `apikey`. São enviados um UUID de submissão e os 8 valores escolhidos. O SQL valida tudo, impede inserção direta anónima na tabela e evita duplicados do mesmo envio. **Não precisas de Edge Functions para este fluxo simples.** Se já tens Edge Functions, continuam independentes e não são alteradas.
+Se **ainda não executaste** `supabase-setup.sql` neste projeto Supabase:
 
-### Testar o armazenamento
+1. Abre https://supabase.com/dashboard → escolhe o projeto correto.
+2. Vai a **SQL Editor → New query**.
+3. Cola o conteúdo de `supabase-setup.sql` e executa **Run**.
+4. Confirma no **Table Editor** que `public.form_lab_responses` existe.
 
-1. Serve o projeto com VS Code **Live Server** ou `python -m http.server 8080` na pasta do projeto (não uses `file://`).
-2. Abre `http://localhost:8080/` (ou o endereço Live Server); clica **Começar a escolher** e responde às oito perguntas.
-3. No último ecrã, clica **Enviar as minhas escolhas**. Só se o Supabase aceitar o pedido aparece a mensagem **Respostas guardadas no Supabase**.
-4. No Supabase **Table Editor**, abre `form_lab_responses` e confirma uma nova linha. Também podes usar o SQL Editor:
+A tabela não pode ser lida publicamente; a função RPC valida os dados antes de inserir. A publishable key é apropriada para o browser, **mas não é autenticação de utilizadores**. Nunca publiques `sb_secret_`, `service_role` ou outra chave privada. Para tráfego elevado, adiciona proteção anti-spam no backend.
+
+### Testar uma resposta verdadeira
+
+1. Publica o site com os novos ficheiros e confirma o deploy verde em **Actions**.
+2. Abre o site e termina as oito perguntas.
+3. Carrega em **Enviar as minhas escolhas**.
+4. Se aparecer **Respostas guardadas no Supabase**, a função RPC aceitou o pedido; confirma a linha em **Table Editor → form_lab_responses**.
+5. Se aparecer um erro, abre `F12 → Network`, filtra por `submit_form_lab_response` e inspeciona o código HTTP:
+   - **404 / PGRST202**: a função SQL não existe, tem argumentos diferentes ou a cache do esquema ainda não atualizou.
+   - **401 / 403**: chave, permissões ou privilégios de execução incorretos.
+   - **400**: payload ou validações incompatíveis.
+   - **CORS / failed to fetch**: erro de rede, bloqueio ou origem/URL inválido.
+
+Consulta os dados no **SQL Editor**:
 
 ```sql
 select id, created_at, product_interest, preferred_format, price_range
@@ -40,47 +80,34 @@ order by created_at desc
 limit 20;
 ```
 
-Se algo falhar, a interface apresenta o erro, incluindo o código Supabase. Abre **F12 > Network > submit_form_lab_response**:
+**Atenção:** os testes incluídos no desenvolvimento simularam um servidor Supabase; não são prova de que o Supabase real recebeu dados. É obrigatório fazer este teste depois da publicação.
 
-- `Configuração em falta`: `config.js` ainda tem valores de exemplo ou não carregou.
-- `404` / `PGRST202`: falta executar o SQL, há erro no nome da função ou a cache do esquema ainda não atualizou.
-- `401` ou `403`: a chave é incorreta, ou as permissões (`grant execute`) não foram aplicadas.
-- `400` / `22023`: o SQL não corresponde aos códigos das opções na versão do JavaScript.
-- `Failed to fetch` / CORS: confirma o URL, o projeto ativo e a origem; neste pacote o RPC REST não necessita de configurar CORS de uma Edge Function.
+## Publicar corretamente no GitHub
 
-O teste sem ligação real **não demonstra** que os dados estejam na base de dados: até inserires a tua URL/chave e executares o SQL, o envio falhará de forma visível.
+O repositório é `https://github.com/55boogie55/supplement-market-research`. Usa a **pasta clonada do repositório original**, a que tem `origin` correto, e não uma pasta Git independente com outro `Initial commit`.
 
-## Publicar no GitHub Pages
+Extrai o ZIP e copia o conteúdo **para a raiz dessa pasta**, substituindo os ficheiros de mesmo nome (não copies o ZIP como ficheiro isolado). Não substituas a pasta `.git`.
 
-### Pelo site do GitHub (sem terminal)
+No terminal dessa pasta:
 
-1. Abre o repositório onde queres publicar a FORM / LAB, ou cria um novo repositório.
-2. Extrai este ZIP; na vista do repositório, escolhe **Add file > Upload files** e envia **o conteúdo da pasta**, mantendo `index.html` na raiz e a pasta `assets/` com os SVG. Confirma **Commit changes**. (Se já existem ficheiros com o mesmo nome, é mais simples substituí-los pelo Git no computador.)
-3. Em **Settings > Pages > Build and deployment**, define **Source: Deploy from a branch**, **Branch: main**, **Folder: / (root)**, e **Save**.
-4. O site terá geralmente o endereço `https://UTILIZADOR.github.io/NOME-REPOSITORIO/` (ou `https://UTILIZADOR.github.io/` no repositório especial `UTILIZADOR.github.io`).
-5. Confirma que `config.js` foi incluído no commit e testa uma submissão no **endereço público**, seguindo o teste do Supabase acima.
-
-### Pelo terminal no teu repositório existente
-
-Guarda uma cópia dos ficheiros atuais. Extrai o ZIP para a pasta do repositório, **substitui os ficheiros antigos** e remove `quiz.html` — já não é usado. Mantém outros ficheiros de que precises noutros projetos.
-
-```bash
-git status
-git add index.html styles.css app.js config.js assets/ supabase-setup.sql README.md .gitignore
-git rm quiz.html    # só se o ficheiro existir e estiver versionado
-git commit -m "FORM LAB V8: single-page quiz e Supabase"
+```powershell
+git status -sb
+git add index.html app.js styles.css config.js config.example.js README.md supabase-setup.sql assets/
+git commit -m "FORM LAB V9: animacoes suaves e correcao do Supabase"
 git push origin main
 ```
 
-**Importante:** Se o teu repositório já tiver uma `config.js` com valores reais, substitui apenas o conteúdo e confirma que só contém a chave **publishable** antes de a publicar. **Não faças commit de um ficheiro que contenha chaves secretas.**
+No GitHub, abre **Settings → Pages**, verifica **Deploy from a branch → main → /(root)**, e depois **Actions** para confirmar o deploy.
 
-## Personalizar perguntas
+Depois do deploy visita:
 
-No início de `app.js`, o array `steps` contém as 8 perguntas, pela ordem: suplemento → formato → sabor → frequência de compra → treino → idade → fator de decisão → preço. Cada pergunta apresenta **4 opções ilustradas**. Podes mudar textos; se alterares os valores `value` ou o número de perguntas, atualiza também as validações da função em `supabase-setup.sql` e volta a executá-lo.
+- Site: https://55boogie55.github.io/supplement-market-research/
+- Configuração carregada (confirma que é a V9): https://55boogie55.github.io/supplement-market-research/config.js?v=9.1
 
-## Experiência e acessibilidade
+Usa `Ctrl + Shift + R` se o browser estiver a mostrar ficheiros antigos.
 
-- Layout escuro e cor pêssego inspirado na captura `_v5_quiz`; animações entre ecrãs, cartões em cascata, microinteração de hover, indicador de progresso, revisão editável.
-- 100% responsivo e utilizável com teclado; tecla Escape fecha o quiz; respeita `prefers-reduced-motion`.
-- O progresso é guardado apenas na `sessionStorage` do navegador, para suportar recarregamentos. Nenhum dado é enviado antes do botão final.
-- A tabela não fornece leitura pública aos visitantes. Por ser um formulário público, poderão existir envios automatizados; para lançamento com tráfego significativo, considera proteções anti-spam e limites de taxa no servidor (p.ex., Edge Function com Turnstile). O código atual **não implementa** essas proteções.
+## Acessibilidade
+
+- Botões reais, navegação por teclado e estados de foco; `Escape` para fechar o quiz.
+- Opção Voltar, revisão editável e envio apenas na confirmação final.
+- Movimento reduzido respeitado nas preferências do sistema.

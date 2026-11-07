@@ -1,4 +1,4 @@
-/* FORM / LAB — V8 | Um só index.html; vista animada, 8 escolhas, envio Supabase RPC. */
+/* FORM / LAB — V9 | Single HTML, movimento orgânico, 8 escolhas e Supabase RPC. */
 (() => {
   'use strict';
 
@@ -232,11 +232,24 @@
     message.className = 'notice';
     message.textContent = 'A estabelecer ligação segura…';
     try {
-      const cfg = window.FORM_LAB_CONFIG || {};
-      const url = String(cfg.SUPABASE_URL||'').trim().replace(/\/+$/,'');
-      const key = String(cfg.SUPABASE_PUBLISHABLE_KEY||'').trim();
-      if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url) || !/^sb_publishable_[a-zA-Z0-9_-]{8,}$/.test(key) || url.includes('COLOCA') || key.includes('COLOCA')) {
-        throw new Error('Configuração em falta: abre config.js e coloca o Project URL e a publishable key do teu Supabase.');
+      // config.js é carregado antes deste script no index.html.
+      if (!window.FORM_LAB_CONFIG || typeof window.FORM_LAB_CONFIG !== 'object') {
+        throw new Error('O ficheiro config.js não foi carregado. Confirma que existe na raiz do site (ao lado do index.html) e está publicado no GitHub Pages.');
+      }
+      const cfg = window.FORM_LAB_CONFIG;
+      const key = String(cfg.SUPABASE_PUBLISHABLE_KEY || '').trim();
+      const suppliedUrl = String(cfg.SUPABASE_URL || '').trim();
+      if (/COLOCA|TEU-PROJETO|YOUR-PROJECT/i.test(suppliedUrl + key) || !suppliedUrl || !key) {
+        throw new Error('O config.js publicado ainda contém valores de exemplo ou está incompleto. Atualiza-o no GitHub e confirma o deploy.');
+      }
+      // Aceita tanto o Project URL como o Data API URL (/rest/v1/).
+      // O caminho RPC é sempre acrescentado uma única vez abaixo.
+      const url = suppliedUrl.replace(/\/+$/, '').replace(/\/rest\/v1$/i, '');
+      if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)) {
+        throw new Error('URL do Supabase inválido. Usa https://ID-DO-PROJETO.supabase.co (sem outras pastas).');
+      }
+      if (!/^sb_publishable_[a-zA-Z0-9_-]{8,}$/.test(key)) {
+        throw new Error('Publishable key inválida. Copia a chave sb_publishable_… em Supabase → Settings → API Keys.');
       }
       const payload = { p_submission_id:submissionId };
       steps.forEach(step => payload[`p_${step.key}`] = answers[step.key]);
