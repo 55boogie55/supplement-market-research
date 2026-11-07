@@ -196,6 +196,7 @@
       await animation.finished.catch(()=>{});
       animation.cancel();
     }
+    stopHoverMotion();
     currentStep = Math.max(0,Math.min(next,steps.length));
     persist();
     renderStep();
@@ -304,6 +305,7 @@
     if (!open) return;
     open=false;
     busy=false;
+    stopHoverMotion();
     experience.classList.remove('is-visible','can-hover');
     experience.setAttribute('aria-hidden','true');
     document.body.classList.remove('quiz-open');
@@ -319,17 +321,50 @@
   document.querySelectorAll('[data-start]').forEach(button=>button.addEventListener('click',event=>openExperience(event)));
   closeButton.addEventListener('click',()=>closeExperience());
   back.addEventListener('click',()=>switchStep(currentStep-1));
-  experience.addEventListener('pointermove',event=>{
-    if (event.pointerType==='touch') return;
+  // A luz e a ilustração acompanham o cursor com inércia (sem saltos de cor).
+  // Há um único requestAnimationFrame ativo e pára quando o cursor sai do cartão.
+  let activeHoverCard = null;
+  let hoverFrame = 0;
+  const pointer = { x:72, y:48, px:0, py:0, tx:72, ty:48, tpx:0, tpy:0 };
+  function stopHoverMotion() {
+    if (hoverFrame) cancelAnimationFrame(hoverFrame);
+    hoverFrame = 0;
+    activeHoverCard = null;
+  }
+  function animateHoverMotion() {
+    hoverFrame = 0;
+    if (!activeHoverCard || !open || reducedMotion) return;
+    const ease = 0.13;
+    for (const [key, target] of [['x','tx'],['y','ty'],['px','tpx'],['py','tpy']]) {
+      pointer[key] += (pointer[target] - pointer[key]) * ease;
+    }
+    activeHoverCard.style.setProperty('--mx', `${pointer.x.toFixed(2)}%`);
+    activeHoverCard.style.setProperty('--my', `${pointer.y.toFixed(2)}%`);
+    activeHoverCard.style.setProperty('--px', `${pointer.px.toFixed(2)}px`);
+    activeHoverCard.style.setProperty('--py', `${pointer.py.toFixed(2)}px`);
+    if (['x','y','px','py'].some((key,i) =>
+      Math.abs(pointer[key] - pointer[['tx','ty','tpx','tpy'][i]]) > 0.07)) {
+      hoverFrame = requestAnimationFrame(animateHoverMotion);
+    }
+  }
+  experience.addEventListener('pointermove', event => {
+    if (event.pointerType === 'touch' || reducedMotion) return;
     experience.classList.add('can-hover');
-    const card=event.target.closest('.option');
-    if (!card) return;
-    const r=card.getBoundingClientRect();
-    card.style.setProperty('--mx',`${((event.clientX-r.left)/r.width*100).toFixed(1)}%`);
-    card.style.setProperty('--my',`${((event.clientY-r.top)/r.height*100).toFixed(1)}%`);
-    card.style.setProperty('--px',`${((event.clientX-r.left)/r.width-.5)*9}px`);
-    card.style.setProperty('--py',`${((event.clientY-r.top)/r.height-.5)*7}px`);
-  },{passive:true});
+    const card = event.target.closest('.option');
+    if (!card) { stopHoverMotion(); return; }
+    if (card !== activeHoverCard) {
+      stopHoverMotion();
+      activeHoverCard = card;
+      pointer.x=72; pointer.y=48; pointer.px=0; pointer.py=0;
+    }
+    const r = card.getBoundingClientRect();
+    pointer.tx = Math.max(0, Math.min(100,(event.clientX-r.left)/r.width*100));
+    pointer.ty = Math.max(0, Math.min(100,(event.clientY-r.top)/r.height*100));
+    pointer.tpx = (pointer.tx/100-.5)*8;
+    pointer.tpy = (pointer.ty/100-.5)*6;
+    if (!hoverFrame) hoverFrame = requestAnimationFrame(animateHoverMotion);
+  }, {passive:true});
+  experience.addEventListener('pointerleave', stopHoverMotion);
   scene.addEventListener('click',event=>{
     const choice=event.target.closest('[data-choice]');
     const edit=event.target.closest('[data-edit-step]');
