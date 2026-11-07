@@ -1,7 +1,7 @@
-// Configuração pública do Supabase.
-// Deixa os campos vazios enquanto estiveres a testar em modo de demonstração.
-// Quando criares o projeto Supabase, cola aqui o Project URL e a Publishable key.
-// NUNCA coloques aqui a secret key ou service_role key.
-
-export const SUPABASE_URL = "https://qtrmxooicythgpqfqkbg.supabase.co";
-export const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZWB_W6FFJ7eOdcxSV3Stog_8y0Iv7HI";
+// Este ficheiro é PÚBLICO: é descarregado pelo browser e publicado no GitHub Pages.
+// Usa SOMENTE a Publishable Key (sb_publishable_...) do Supabase.
+// NUNCA coloques aqui sb_secret_, service_role, password ou JWT de utilizador.
+window.FORM_LAB_CONFIG = {
+  SUPABASE_URL: 'https://qtrmxooicythgpqfqkbg.supabase.co/rest/v1/',
+  SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_ZWB_W6FFJ7eOdcxSV3Stog_8y0Iv7HI'
+};

@@ -1,232 +1,73 @@
 <!doctype html>
 <html lang="pt-PT">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f3f2ec" />
-  <meta name="description" content="Ajuda-nos a perceber como deve ser a próxima geração de suplementação. Participa neste estudo de mercado anónimo." />
-  <title>FORM / LAB — Ajuda a criar o próximo suplemento</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <script type="module" src="app.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141112">
+  <meta name="description" content="Ajuda a criar o futuro da FORM / LAB. Escolhe suplementos, formatos, sabores e preços numa experiência interativa de dois minutos.">
+  <title>FORM / LAB — A escolha é tua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=8.0">
+  <script src="./config.js?v=8.0" defer></script>
+  <script src="./app.js?v=8.0" defer></script>
 </head>
 <body>
-  <div class="announcement">ESTUDO DE MERCADO · PORTUGAL · 2026</div>
-
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="FORM Lab — início"><span class="brand-mark">F</span> FORM<span class="brand-slash">/</span>LAB</a>
-    <nav class="desktop-nav" aria-label="Navegação principal">
-      <a href="#concept">O conceito</a>
-      <a href="#study">Estudo</a>
-      <a href="#results">Resultados</a>
-    </nav>
-    <a class="header-cta" href="#study">Dar a minha opinião <span aria-hidden="true">↗</span></a>
-  </header>
-
-  <main id="top">
-    <section class="hero section-wrap">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-dot"></span> A próxima geração de suplementação</p>
-        <h1>Suplementos que acompanham <em>a tua rotina.</em></h1>
-        <p class="hero-description">Estamos a explorar novas formas de tornar a suplementação mais simples, prática e interessante. Antes de criar qualquer produto, queremos saber o que tu realmente procuras.</p>
-        <div class="hero-actions">
-          <a class="button button-dark" href="#study">Participar no estudo <span aria-hidden="true">↓</span></a>
-          <span class="hero-note">Demora cerca de 2 minutos.</span>
+  <!-- UM ÚNICO HTML: o quiz funciona como uma vista animada sobre a landing. -->
+  <div id="homepage" class="homepage">
+    <div class="top-strip"><span class="top-strip-dot"></span> ESTUDO DE MERCADO · PORTUGAL · 2026 <span class="top-strip-end">CONCEITOS EM EXPLORAÇÃO / NÃO É UMA LOJA</span></div>
+    <header class="site-header page-wrap">
+      <a href="#inicio" class="brand" aria-label="FORM LAB, início"><span class="brand-mark">✳</span><span>FORM <i>/</i> LAB</span></a>
+      <nav class="home-nav" aria-label="Navegação principal"><a href="#ideia">A ideia</a><a href="#como-funciona">Como funciona</a></nav>
+      <button class="nav-join" type="button" data-start>Participar <span aria-hidden="true">↗</span></button>
+    </header>
+    <main id="inicio">
+      <section class="hero page-wrap" aria-labelledby="main-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> PROJETO 001 / YOUR CHOICE LAB</div>
+          <h1 id="main-title">O próximo grande <em>suplemento</em> começa <span class="peach">contigo.</span></h1>
+          <p class="hero-desc">Ainda não temos um produto à venda. Estamos a construir uma marca com base nas tuas escolhas. Diz-nos que suplementos, formatos e preços fazem realmente sentido.</p>
+          <button id="start-button" class="start-button" type="button" data-start>
+            <span class="start-label"><small>2 MINUTOS · 8 ESCOLHAS</small><strong>Começar a escolher</strong></span>
+            <span class="start-arrow" aria-hidden="true">↗</span>
+          </button>
+          <p class="hero-foot"><span class="dot"></span> 2 minutos <span>·</span> 8 escolhas <span>·</span> Sem registo <span>·</span> Tudo nesta página</p>
         </div>
-        <div class="hero-proof">
-          <div class="proof-item"><strong>01</strong><span>Escolhe os teus favoritos</span></div>
-          <div class="proof-item"><strong>02</strong><span>Partilha as tuas preferências</span></div>
-          <div class="proof-item"><strong>03</strong><span>Ajuda a dar forma à ideia</span></div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-ring ring-one"></div><div class="hero-ring ring-two"></div><div class="hero-ring ring-three"></div>
+          <span class="corner-note">IDEAS IN MOTION / 001 ↗</span>
+          <div class="float-bubble bubble-creatine"><img src="./assets/creatine.svg" alt=""><span>CREATINA <small>01 / PERFORMANCE</small></span></div>
+          <div class="float-bubble bubble-protein"><img src="./assets/protein.svg" alt=""><span>PROTEÍNA <small>02 / NUTRITION</small></span></div>
+          <div class="float-bubble bubble-magnesium"><img src="./assets/magnesium.svg" alt=""><span>MAGNÉSIO <small>03 / ROUTINE</small></span></div>
+          <div class="float-bubble bubble-ashwagandha"><img src="./assets/ashwagandha.svg" alt=""><span>ASHWAGANDHA <small>04 / WELLNESS</small></span></div>
         </div>
+      </section>
+      <section class="info-area page-wrap" id="ideia">
+        <div><p class="eyebrow">THE CHOICE LAB / 2026</p><h2>Menos palpites.<br><em>Mais escolhas reais.</em></h2></div>
+        <p>Não estamos a vender nada. Queremos testar uma nova visão de suplementação e ouvir opiniões reais antes de criar o primeiro produto.</p>
+      </section>
+      <section class="how page-wrap" id="como-funciona"><span>01 / Escolhe o suplemento</span><span>02 / Descobre o formato</span><span>03 / Dá-nos a tua opinião</span><button type="button" data-start>Participar agora ↗</button></section>
+    </main>
+    <footer class="home-footer page-wrap"><span>FORM / LAB © 2026</span><span>ESTUDO EXPLORATÓRIO · SEM RECOLHA DE EMAILS</span></footer>
+  </div>
+  <section id="experience" class="experience" aria-label="Experiência de escolha FORM LAB" aria-hidden="true" hidden>
+    <div class="experience-lines" aria-hidden="true"></div>
+    <header class="experience-header">
+      <div class="experience-head-inner">
+        <span class="brand brand-quiz"><span class="brand-mark">✳</span><span>FORM <i>/</i> LAB</span></span>
+        <span class="header-center">THE CHOICE LAB <b>✳</b> 2026</span>
+        <button id="close-experience" type="button" class="close-button" aria-label="Fechar o questionário e regressar à página inicial">Fechar <span aria-hidden="true">×</span></button>
       </div>
-
-      <div class="hero-art" aria-label="Conceito visual de produtos de suplementação">
-        <div class="art-orbit orbit-one"></div>
-        <div class="art-orbit orbit-two"></div>
-        <div class="art-sticker">MADE FOR<br />REAL ROUTINES</div>
-        <div class="product-stage">
-          <div class="mock-pack pack-back"><span>FORM / LAB</span><strong>DAILY<br />ESSENTIALS</strong><small>CONCEPT Nº 03</small></div>
-          <div class="mock-pack pack-front"><span>FORM / LAB</span><strong>GUMMY<br />PROJECT</strong><div class="pack-gummy gummy-a"></div><div class="pack-gummy gummy-b"></div><small>PRODUCT CONCEPT · 2026</small></div>
-          <div class="pack-shadow"></div>
-        </div>
-        <p class="art-caption">CONCEITO EM DESENVOLVIMENTO <span>— 001</span></p>
+    </header>
+    <main class="experience-main">
+      <div class="quiz-progress">
+        <div class="progress-labels"><span id="step-counter">ESCOLHA 01 / 08</span><span id="step-percentage">13%</span></div>
+        <div class="progress-track" role="progressbar" aria-label="Progresso do questionário" aria-valuemin="0" aria-valuemax="100" aria-valuenow="13"><span id="progress-fill"></span></div>
       </div>
-    </section>
-
-    <section class="ticker" aria-label="Categorias em estudo">
-      <div class="ticker-track"><span>PROTEIN GUMMIES</span><i>✳</i><span>CREATINE</span><i>✳</i><span>ASHWAGANDHA</span><i>✳</i><span>DAILY SUPPLEMENTS</span><i>✳</i><span>PROTEIN GUMMIES</span><i>✳</i><span>CREATINE</span><i>✳</i></div>
-    </section>
-
-    <section class="concept section-wrap" id="concept">
-      <div class="section-heading">
-        <p class="eyebrow">01 / O conceito</p>
-        <h2>Menos complicado.<br /><em>Mais pensado para ti.</em></h2>
-      </div>
-      <div class="concept-text">
-        <p>O mercado dos suplementos está cheio de opções. Queremos perceber se há espaço para produtos com formatos mais práticos, sabores apelativos e uma experiência de utilização mais simples.</p>
-        <p>Não temos um produto fechado. Estamos nesta fase precisamente para ouvir pessoas reais antes de tomar decisões.</p>
-        <div class="concept-tags"><span>Sem compromisso</span><span>Respostas anónimas</span><span>~ 2 minutos</span></div>
-      </div>
-    </section>
-
-    <section class="study-section" id="study">
-      <div class="section-wrap study-wrap">
-        <div class="study-intro">
-          <p class="eyebrow eyebrow-light">02 / O teu contributo</p>
-          <h2>Vamos falar de<br /><em>suplementação?</em></h2>
-          <p>Responde às perguntas abaixo. Não existem respostas certas — queremos conhecer as tuas preferências.</p>
-          <div class="study-side-note"><span class="side-note-icon">✳</span><span>As respostas são usadas para análise de mercado. Não pedimos nome, email ou informação clínica.</span></div>
-        </div>
-
-        <form id="survey-form" class="survey-form">
-          <div class="form-topline"><span>QUESTIONÁRIO</span><span><b>08</b> PERGUNTAS</span></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">01</span><span>Qual destes conceitos te desperta mais interesse?</span><small>Escolhe uma opção.</small></legend>
-            <div class="product-options">
-              <label class="product-option">
-                <input type="radio" name="product_interest" value="protein_gummies" required />
-                <span class="option-content"><span class="option-symbol">P.</span><strong>Protein Gummies</strong><small>Proteína num formato diferente.</small></span><span class="radio-mark"></span>
-              </label>
-              <label class="product-option">
-                <input type="radio" name="product_interest" value="creatine_gummies" />
-                <span class="option-content"><span class="option-symbol">C.</span><strong>Creatine Gummies</strong><small>Creatina em formato de goma.</small></span><span class="radio-mark"></span>
-              </label>
-              <label class="product-option">
-                <input type="radio" name="product_interest" value="ashwagandha" />
-                <span class="option-content"><span class="option-symbol">A.</span><strong>Ashwagandha</strong><small>Um conceito à base de ashwagandha.</small></span><span class="radio-mark"></span>
-              </label>
-              <label class="product-option">
-                <input type="radio" name="product_interest" value="daily_gummies" />
-                <span class="option-content"><span class="option-symbol">D.</span><strong>Daily Gummies</strong><small>Outros suplementos em gomas.</small></span><span class="radio-mark"></span>
-              </label>
-              <label class="product-option option-wide">
-                <input type="radio" name="product_interest" value="other" />
-                <span class="option-content"><span class="option-symbol">+</span><strong>Outro conceito</strong><small>Gostava de ver outras ideias.</small></span><span class="radio-mark"></span>
-              </label>
-            </div>
-          </fieldset>
-
-          <div class="form-divider"></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">02</span><span>Que formato preferes?</span><small>Escolhe o formato que comprarias mais facilmente.</small></legend>
-            <div class="choice-grid choice-grid-4">
-              <label class="choice-pill"><input type="radio" name="preferred_format" value="gummies" required /><span>Gomas</span></label>
-              <label class="choice-pill"><input type="radio" name="preferred_format" value="powder" /><span>Pó</span></label>
-              <label class="choice-pill"><input type="radio" name="preferred_format" value="capsules" /><span>Cápsulas</span></label>
-              <label class="choice-pill"><input type="radio" name="preferred_format" value="drink" /><span>Bebida</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form-divider"></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">03</span><span>Quanto pagarias por um produto para cerca de 30 dias?</span><small>Considera um produto de qualidade e com ingredientes transparentes.</small></legend>
-            <div class="choice-grid choice-grid-3">
-              <label class="choice-pill"><input type="radio" name="price_range" value="under_15" required /><span>Menos de 15 €</span></label>
-              <label class="choice-pill"><input type="radio" name="price_range" value="15_20" /><span>15 € – 20 €</span></label>
-              <label class="choice-pill"><input type="radio" name="price_range" value="21_25" /><span>21 € – 25 €</span></label>
-              <label class="choice-pill"><input type="radio" name="price_range" value="26_30" /><span>26 € – 30 €</span></label>
-              <label class="choice-pill"><input type="radio" name="price_range" value="over_30" /><span>Mais de 30 €</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form-divider"></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">04</span><span>Com que frequência compras suplementos?</span></legend>
-            <div class="choice-grid choice-grid-2">
-              <label class="choice-pill"><input type="radio" name="purchase_frequency" value="monthly" required /><span>Todos os meses</span></label>
-              <label class="choice-pill"><input type="radio" name="purchase_frequency" value="every_2_3_months" /><span>A cada 2–3 meses</span></label>
-              <label class="choice-pill"><input type="radio" name="purchase_frequency" value="when_needed" /><span>Apenas quando preciso</span></label>
-              <label class="choice-pill"><input type="radio" name="purchase_frequency" value="not_yet" /><span>Não compro atualmente</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form-divider"></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">05</span><span>Como descreverias a tua rotina de treino?</span></legend>
-            <div class="choice-grid choice-grid-2">
-              <label class="choice-pill"><input type="radio" name="training_frequency" value="4_plus" required /><span>4 ou mais vezes por semana</span></label>
-              <label class="choice-pill"><input type="radio" name="training_frequency" value="2_3" /><span>2–3 vezes por semana</span></label>
-              <label class="choice-pill"><input type="radio" name="training_frequency" value="once" /><span>1 vez por semana</span></label>
-              <label class="choice-pill"><input type="radio" name="training_frequency" value="rarely_none" /><span>Raramente / Não treino</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form-divider"></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">06</span><span>Em que faixa etária te encontras?</span><small>Este estudo destina-se a maiores de 18 anos.</small></legend>
-            <div class="choice-grid choice-grid-3">
-              <label class="choice-pill"><input type="radio" name="age_range" value="18_24" required /><span>18–24</span></label>
-              <label class="choice-pill"><input type="radio" name="age_range" value="25_34" /><span>25–34</span></label>
-              <label class="choice-pill"><input type="radio" name="age_range" value="35_44" /><span>35–44</span></label>
-              <label class="choice-pill"><input type="radio" name="age_range" value="45_54" /><span>45–54</span></label>
-              <label class="choice-pill"><input type="radio" name="age_range" value="55_plus" /><span>55+</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form-divider"></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">07</span><span>Que sabores te despertam mais interesse?</span></legend>
-            <div class="choice-grid choice-grid-3">
-              <label class="choice-pill"><input type="radio" name="flavor" value="fruit" required /><span>Fruta</span></label>
-              <label class="choice-pill"><input type="radio" name="flavor" value="berries" /><span>Frutos vermelhos</span></label>
-              <label class="choice-pill"><input type="radio" name="flavor" value="citrus" /><span>Citrinos</span></label>
-              <label class="choice-pill"><input type="radio" name="flavor" value="neutral" /><span>Neutro / Sem sabor</span></label>
-              <label class="choice-pill"><input type="radio" name="flavor" value="no_preference" /><span>Sem preferência</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form-divider"></div>
-
-          <fieldset class="question-block">
-            <legend><span class="question-number">08</span><span>O que mais influencia a tua decisão de compra?</span><small>Escolhe o fator mais importante para ti.</small></legend>
-            <div class="choice-grid choice-grid-2">
-              <label class="choice-pill"><input type="radio" name="decision_factor" value="ingredients" required /><span>Ingredientes e qualidade</span></label>
-              <label class="choice-pill"><input type="radio" name="decision_factor" value="price" /><span>Preço</span></label>
-              <label class="choice-pill"><input type="radio" name="decision_factor" value="taste" /><span>Sabor</span></label>
-              <label class="choice-pill"><input type="radio" name="decision_factor" value="convenience" /><span>Praticidade</span></label>
-              <label class="choice-pill"><input type="radio" name="decision_factor" value="brand_trust" /><span>Confiança na marca</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form-footer">
-            <p>Ao submeter, confirmas que tens 18 ou mais anos. As respostas não incluem nome ou email e serão analisadas de forma agregada.</p>
-            <button class="button button-lime submit-button" id="submit-button" type="submit">Enviar respostas <span aria-hidden="true">↗</span></button>
-            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <section class="results-section section-wrap" id="results">
-      <div class="results-heading">
-        <div><p class="eyebrow">03 / A comunidade</p><h2>O que estamos<br /><em>a descobrir.</em></h2></div>
-        <div class="results-counter"><strong id="total-responses">—</strong><span>respostas recebidas</span></div>
-      </div>
-      <p class="results-description" id="results-description">À medida que as pessoas participam, os resultados agregados aparecem aqui.</p>
-      <div id="results-content" class="results-grid" aria-live="polite">
-        <div class="empty-results"><span>✳</span><p>Os primeiros resultados vão aparecer aqui.</p><small>Participa no estudo e ajuda a iniciar a conversa.</small></div>
-      </div>
-      <p class="results-footnote" id="results-footnote"></p>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <a class="brand brand-footer" href="#top"><span class="brand-mark">F</span> FORM<span class="brand-slash">/</span>LAB</a>
-    <p>Um conceito em exploração. Feito para ouvir antes de criar.</p>
-    <span>ESTUDO DE MERCADO · 2026</span>
-  </footer>
-
-  <script>
-    // A navegação e o formulário são tratados por app.js.
-  </script>
+      <div id="scene" class="scene" aria-live="polite" aria-atomic="true"></div>
+      <div class="experience-bottom"><button type="button" id="previous-button" class="back-button" hidden>← Voltar à pergunta anterior</button><span id="quiz-footer-note">ESCOLHE UM CARTÃO PARA CONTINUAR ↗</span></div>
+    </main>
+  </section>
 </body>
 </html>

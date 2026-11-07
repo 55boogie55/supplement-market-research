@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="380" viewBox="0 0 440 380" role="img" aria-labelledby="title desc">
+<title id="title">Conceito visual PROTEIN</title><desc id="desc">Embalagem ilustrativa fictícia PROTEIN FORM LAB</desc>
+<defs>
+ <linearGradient id="pack" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FAF7DA"/><stop offset=".5" stop-color="#DEDDC9"/><stop offset="1" stop-color="#A9AD8B"/></linearGradient>
+ <linearGradient id="line" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FAF7DA"/><stop offset="1" stop-color="#1C201A"/></linearGradient>
+ <linearGradient id="stripe" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fff" stop-opacity=".36"/><stop offset=".5" stop-color="#fff" stop-opacity=".0"/><stop offset="1" stop-color="#111" stop-opacity=".16"/></linearGradient>
+ <filter id="shadow" x="-50%" y="-50%" width="200%" height="220%"><feGaussianBlur stdDeviation="13"/></filter>
+</defs>
+<ellipse cx="222" cy="340" rx="123" ry="18" fill="#000" opacity=".32" filter="url(#shadow)"/>
+<g transform="rotate(-7 218 184)">
+<path d="M129 52q86-9 179 0l18 268q-108 16-214 0z" fill="url(#pack)" stroke="#FAF7DA" stroke-opacity=".42" stroke-width="1"/>
+<path d="M129 52q86-9 179 0l18 268q-108 16-214 0z" fill="url(#stripe)"/>
+<path d="M134 67q82-8 168 0" stroke="#1C201A" stroke-opacity=".24" stroke-width="3" fill="none"/>
+<path d="M118 317q102 14 203 0" stroke="#1C201A" stroke-opacity=".14" stroke-width="7" fill="none"/>
+<text x="143" y="99" font-family="Arial,sans-serif" font-weight="900" font-size="15" letter-spacing="1" fill="#1C201A">FORM / LAB</text>
+<text x="144" y="130" font-family="Arial,sans-serif" font-weight="700" font-size="10" letter-spacing="2.5" fill="#1C201A" opacity=".68">EVERYDAY FUEL</text>
+<text x="141" y="176" font-family="Arial,sans-serif" font-size="36" font-weight="900" letter-spacing="-2" fill="#1C201A">P</text>
+<text x="142" y="200" font-family="Arial,sans-serif" font-size="15" font-weight="800" letter-spacing="1.3" fill="#1C201A">PROTEIN</text>
+<g fill="none" stroke="url(#line)" stroke-width="5" stroke-linecap="round" opacity=".45"><path d="M178 283v-58m0 28-32-31m32 14 33-30m-33 65-31-23m31 10 37-31"/><path d="M208 285v-35m0 16 27-23"/></g>
+<path d="M143 301h146" stroke="#1C201A" stroke-opacity=".36"/>
+<text x="144" y="313" font-family="Arial,sans-serif" font-size="8.5" font-weight="700" letter-spacing="2" fill="#1C201A">CONCEPT NO. 02</text>
+</g></svg>

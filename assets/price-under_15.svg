@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="250" viewBox="0 0 340 250" role="img" aria-label="Ilustração editorial">
+    <defs>
+      <linearGradient id="main" x1=".15" y1=".06" x2=".89" y2=".92"><stop stop-color="#ffe0ad"/><stop offset="1" stop-color="#dfad83"/></linearGradient>
+      <linearGradient id="shine" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity=".08"/></linearGradient>
+      <filter id="shadow" x="-40%" y="-40%" width="180%" height="200%"><feDropShadow dx="1" dy="12" stdDeviation="12" flood-color="#000" flood-opacity=".30"/></filter>
+      <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+    </defs>
+    <ellipse cx="172" cy="221" rx="96" ry="12" fill="#000" opacity=".25" filter="url(#soft)"/>
+    <g opacity=".27" fill="none" stroke="#dfad83" stroke-width="1.2"><circle cx="170" cy="119" r="101"/><path d="M42 190 69 181M260 36 285 28"/></g>
+    <g fill="#ffe0ad" opacity=".76"><circle cx="43" cy="65" r="3"/><circle cx="292" cy="170" r="3"/><path d="M287 60v16m-8-8h16" stroke="#ffe0ad" stroke-width="2"/></g>
+    <g transform="rotate(-9 170 120)" filter="url(#shadow)"><ellipse cx="103" cy="188" rx="28" ry="10" fill="#e5ad86" stroke="#fff1dc" stroke-width="1.5"/><path d="M75 188v7a28 10 0 0 0 56 0v-7" fill="#c98a70"/><ellipse cx="161" cy="188" rx="28" ry="10" fill="#eccbb2" stroke="#fff1dc" stroke-width="1.5"/><path d="M133 188v7a28 10 0 0 0 56 0v-7" fill="#bb998a"/><ellipse cx="161" cy="176" rx="28" ry="10" fill="#eccbb2" stroke="#fff1dc" stroke-width="1.5"/><path d="M133 176v7a28 10 0 0 0 56 0v-7" fill="#bb998a"/><ellipse cx="219" cy="188" rx="28" ry="10" fill="#e5ad86" stroke="#fff1dc" stroke-width="1.5"/><path d="M191 188v7a28 10 0 0 0 56 0v-7" fill="#c98a70"/><ellipse cx="219" cy="176" rx="28" ry="10" fill="#e5ad86" stroke="#fff1dc" stroke-width="1.5"/><path d="M191 176v7a28 10 0 0 0 56 0v-7" fill="#c98a70"/><circle cx="228" cy="100" r="42" fill="url(#main)" stroke="#fff0d8" stroke-width="4"/><text x="228" y="116" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="800" fill="#302021">€</text></g>
+    </svg>

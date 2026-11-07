@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="380" viewBox="0 0 440 380" role="img" aria-labelledby="title desc">
+<title id="title">Conceito visual MAGNESIUM</title><desc id="desc">Embalagem ilustrativa fictícia MAGNESIUM FORM LAB</desc>
+<defs>
+ <linearGradient id="pack" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DCEAF0"/><stop offset=".5" stop-color="#B8C0C1"/><stop offset="1" stop-color="#6F8689"/></linearGradient>
+ <linearGradient id="line" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DCEAF0"/><stop offset="1" stop-color="#172325"/></linearGradient>
+ <linearGradient id="stripe" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fff" stop-opacity=".36"/><stop offset=".5" stop-color="#fff" stop-opacity=".0"/><stop offset="1" stop-color="#111" stop-opacity=".16"/></linearGradient>
+ <filter id="shadow" x="-50%" y="-50%" width="200%" height="220%"><feGaussianBlur stdDeviation="13"/></filter>
+</defs>
+<ellipse cx="222" cy="340" rx="123" ry="18" fill="#000" opacity=".32" filter="url(#shadow)"/>
+<g transform="rotate(-7 218 184)">
+<path d="M129 52q86-9 179 0l18 268q-108 16-214 0z" fill="url(#pack)" stroke="#DCEAF0" stroke-opacity=".42" stroke-width="1"/>
+<path d="M129 52q86-9 179 0l18 268q-108 16-214 0z" fill="url(#stripe)"/>
+<path d="M134 67q82-8 168 0" stroke="#172325" stroke-opacity=".24" stroke-width="3" fill="none"/>
+<path d="M118 317q102 14 203 0" stroke="#172325" stroke-opacity=".14" stroke-width="7" fill="none"/>
+<text x="143" y="99" font-family="Arial,sans-serif" font-weight="900" font-size="15" letter-spacing="1" fill="#172325">FORM / LAB</text>
+<text x="144" y="130" font-family="Arial,sans-serif" font-weight="700" font-size="10" letter-spacing="2.5" fill="#172325" opacity=".68">DAILY RITUAL</text>
+<text x="141" y="176" font-family="Arial,sans-serif" font-size="36" font-weight="900" letter-spacing="-2" fill="#172325">Mg</text>
+<text x="142" y="200" font-family="Arial,sans-serif" font-size="15" font-weight="800" letter-spacing="1.3" fill="#172325">MAGNESIUM</text>
+<g fill="url(#line)" opacity=".42"><circle cx="130" cy="247" r="13"/><circle cx="168" cy="269" r="22"/><circle cx="222" cy="232" r="14"/><circle cx="251" cy="267" r="22"/><circle cx="286" cy="236" r="8"/></g>
+<path d="M143 301h146" stroke="#172325" stroke-opacity=".36"/>
+<text x="144" y="313" font-family="Arial,sans-serif" font-size="8.5" font-weight="700" letter-spacing="2" fill="#172325">CONCEPT NO. 03</text>
+</g></svg>
