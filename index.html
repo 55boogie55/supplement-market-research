@@ -81,7 +81,7 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
   text-align:left;background:linear-gradient(180deg,#fffefb 0%,#f7f1e8 100%);
   border-radius:28px;box-shadow:0 10px 28px rgba(67,46,30,.05), inset 0 1px 0 rgba(255,255,255,.65);
   position:relative;isolation:isolate;overflow:hidden;transform:translate3d(0,0,0);
-  transition:transform 1.05s cubic-bezier(.18,.86,.2,1),box-shadow .95s ease,border-color .85s ease,background .85s ease;
+  transition:transform 1.35s cubic-bezier(.22,.8,.2,1),box-shadow 1.25s ease,border-color 1.05s ease,background 1.05s ease;
   animation:card-in .7s var(--ease) both;animation-delay:calc(var(--n)*65ms);
 }
 .choice::before{
@@ -94,12 +94,12 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
 .choice::after{
   content:'';position:absolute;left:16px;right:16px;bottom:-36px;height:70px;border-radius:999px;
   background:radial-gradient(ellipse at center,rgba(81,49,29,.13),transparent 68%);
-  opacity:0;filter:blur(10px);transform:scale(.86);transition:opacity .95s ease,transform 1.05s var(--soft);pointer-events:none;z-index:0
+  opacity:0;filter:blur(10px);transform:scale(.86);transition:opacity 1.15s ease,transform 1.35s var(--soft);pointer-events:none;z-index:0
 }
 .choice:hover::before,.choice:focus-visible::before{opacity:1}
 .choice:hover::after,.choice:focus-visible::after{opacity:1;transform:scale(1)}
 .choice:hover,.choice:focus-visible{
-  transform:translate3d(0,-10px,0) scale(1.008);
+  transform:translate3d(0,-8px,0) scale(1.008);
   box-shadow:0 28px 58px rgba(65,44,29,.13), inset 0 1px 0 rgba(255,255,255,.8);
   border-color:#dfc8ae;
 }
@@ -130,7 +130,7 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
   transition:transform 1.05s var(--soft), filter .9s ease;
   filter:drop-shadow(0 14px 18px rgba(64,33,15,.18));
 }
-.choice:hover .product-jar,.choice:hover .flavor-gummy{transform:translateY(-8px) rotate(0deg) scale(1.045)}
+.choice:hover .product-jar,.choice:hover .flavor-gummy{transform:translateY(-6px) rotate(0deg) scale(1.03)}
 .product-jar{
   width:92px;height:104px;
 }
@@ -185,11 +185,18 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
   position:absolute;right:28px;top:12px;width:18px;height:10px;border-radius:14px 14px 0 14px;
   background:linear-gradient(145deg,#7ca36d,#abc89d);transform:rotate(-22deg)
 }
+.photo{height:164px;border-radius:22px;position:relative;overflow:hidden;margin-bottom:18px;background-color:#eadfcf;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -10px 24px rgba(73,45,28,.06)}
+.photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.04) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,.08) 100%);pointer-events:none}
+.photo-grid{width:100%;height:100%;background-repeat:no-repeat;background-size:400% 200%;transform:scale(1.02);transition:transform 1.35s var(--soft),filter 1.15s ease;filter:saturate(1.04) contrast(1.03)}
+.choice:hover .photo-grid{transform:scale(1.06)}
+.bg-supp{background-image:url('assets/supplements-grid.png')}
+.bg-flavor{background-image:url('assets/flavours-grid.png')}
+.pos-0{background-position:0% 0%}.pos-1{background-position:33.333% 0%}.pos-2{background-position:66.666% 0%}.pos-3{background-position:100% 0%}.pos-4{background-position:0% 100%}.pos-5{background-position:33.333% 100%}.pos-6{background-position:66.666% 100%}.pos-7{background-position:100% 100%}
 .product-chip{
   position:absolute;left:16px;bottom:14px;display:inline-flex;align-items:center;gap:8px;
   padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.6);
   backdrop-filter:blur(4px);font-size:10px;font-weight:800;letter-spacing:.15em;color:#5f4c40;text-transform:uppercase;
-  box-shadow:0 6px 16px rgba(64,42,27,.06)
+  box-shadow:0 6px 16px rgba(64,42,27,.06);z-index:2
 }
 .choice h3{position:relative;z-index:2;font-family:'Playfair Display',Georgia,serif;letter-spacing:-.035em;font-size:27px;font-weight:500;line-height:1.1;margin:0 0 11px}
 .choice p{position:relative;z-index:2;margin:0;color:#81776f;line-height:1.58;font-size:12px;min-height:38px}
@@ -234,7 +241,8 @@ footer strong{font-family:'Playfair Display',Georgia,serif;font-weight:500;color
 
 body:not(.participating) .hero{padding-bottom:115px}
 body:not(.participating) .fine-print{padding-top:20px}
-body.participating .canvas{animation:vote-reveal .65s cubic-bezier(.2,.8,.2,1) both}
+body.participating .top{display:none}
+body.participating .canvas{margin-top:0;padding-top:54px;animation:vote-reveal .65s cubic-bezier(.2,.8,.2,1) both}
 @keyframes vote-reveal{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes card-in{from{opacity:0;transform:translateY(25px) scale(.98)}to{opacity:1;transform:none}}
 
@@ -301,23 +309,23 @@ const SUPABASE = {
 };
 
 const products = [
-  {id:'creatina',name:'Creatina',description:'Um clássico de quem treina, reinventado em goma.',a:'#dba756',b:'#f9d58d',tag:'Performance'},
-  {id:'multivitaminico',name:'Multivitamínico',description:'Uma rotina de vitaminas num formato simples.',a:'#e4b659',b:'#ffe29b',tag:'Daily'},
-  {id:'magnesio',name:'Magnésio',description:'Um mineral essencial numa proposta diferente.',a:'#8f9f7b',b:'#c0d0a8',tag:'Relax'},
-  {id:'omega_3',name:'Ómega-3',description:'Um formato novo para explorar esta categoria.',a:'#9aafbf',b:'#d6e5ed',tag:'Balance'},
-  {id:'colagenio',name:'Colagénio',description:'Um conceito para quem valoriza o autocuidado.',a:'#d8a0a1',b:'#f6cccd',tag:'Beauty'},
-  {id:'vitamina_d',name:'Vitamina D',description:'Uma vitamina popular, numa nova experiência.',a:'#dea567',b:'#ffdb9d',tag:'Sun'},
-  {id:'ashwagandha',name:'Ashwagandha',description:'Um suplemento botânico para descobrir.',a:'#b5a0b9',b:'#e0cce5',tag:'Calm'}
+  {id:'creatina',name:'Creatina',description:'Um clássico de quem treina, reinventado em goma.',tag:'Performance',img:0},
+  {id:'multivitaminico',name:'Multivitamínico',description:'Uma rotina de vitaminas num formato simples.',tag:'Daily',img:1},
+  {id:'magnesio',name:'Magnésio',description:'Um mineral essencial numa proposta diferente.',tag:'Relax',img:2},
+  {id:'omega_3',name:'Ómega-3',description:'Um formato novo para explorar esta categoria.',tag:'Balance',img:3},
+  {id:'colagenio',name:'Colagénio',description:'Um conceito para quem valoriza o autocuidado.',tag:'Beauty',img:4},
+  {id:'vitamina_d',name:'Vitamina D',description:'Uma vitamina popular, numa nova experiência.',tag:'Sun',img:5},
+  {id:'ashwagandha',name:'Ashwagandha',description:'Um suplemento botânico para descobrir.',tag:'Calm',img:6}
 ];
 const flavors = [
-  {id:'mirtilo',name:'Mirtilo',description:'Frutado e delicado.',a:'#6b709e',b:'#aab0dd',c:'#dfe4ff'},
-  {id:'frutos_vermelhos',name:'Frutos vermelhos',description:'Intenso e ligeiramente ácido.',a:'#ad566a',b:'#e6a2aa',c:'#ffe6ea'},
-  {id:'laranja',name:'Laranja',description:'Cítrico e doce.',a:'#e59b44',b:'#ffca79',c:'#fff0c8'},
-  {id:'limao',name:'Limão',description:'Vivo e refrescante.',a:'#c4bf56',b:'#f0eb9a',c:'#fff7ca'},
-  {id:'morango',name:'Morango',description:'Um clássico suave.',a:'#d5747d',b:'#f6afb0',c:'#ffe8ea'},
-  {id:'manga',name:'Manga',description:'Tropical e aveludado.',a:'#ddaa4f',b:'#f7d18c',c:'#fff0c5'},
-  {id:'maracuja',name:'Maracujá',description:'Tropical, com um toque ácido.',a:'#d1ac4a',b:'#f1d47f',c:'#fff0ba'},
-  {id:'baunilha',name:'Baunilha',description:'Suave e cremoso.',a:'#d5bc89',b:'#f5e2b0',c:'#fff7de'}
+  {id:'mirtilo',name:'Mirtilo',description:'Frutado e delicado.',img:0},
+  {id:'frutos_vermelhos',name:'Frutos vermelhos',description:'Intenso e ligeiramente ácido.',img:1},
+  {id:'laranja',name:'Laranja',description:'Cítrico e doce.',img:2},
+  {id:'limao',name:'Limão',description:'Vivo e refrescante.',img:3},
+  {id:'morango',name:'Morango',description:'Um clássico suave.',img:4},
+  {id:'manga',name:'Manga',description:'Tropical e aveludado.',img:5},
+  {id:'maracuja',name:'Maracujá',description:'Tropical, com um toque ácido.',img:6},
+  {id:'baunilha',name:'Baunilha',description:'Suave e cremoso.',img:7}
 ];
 
 const stage = document.getElementById('stage');
@@ -326,28 +334,10 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clean = (s) => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function productArt(item){
-  return `<div class="visual" style="--c1:${item.a};--c2:${item.b}">
-    <div class="art">
-      <div class="product-jar" style="--c1:${item.a};--c2:${item.b}">
-        <div class="lid"></div>
-        <div class="glass">
-          <div class="g1"></div><div class="g2"></div><div class="g3"></div>
-          <div class="label">${clean(item.tag)}</div>
-        </div>
-      </div>
-    </div>
-    <div class="product-chip">Goma premium</div>
-  </div>`;
+  return `<div class="photo"><div class="photo-grid bg-supp pos-${item.img}"></div><div class="product-chip">${clean(item.tag)}</div></div>`;
 }
 function flavorArt(item){
-  return `<div class="visual" style="--c1:${item.a};--c2:${item.b};--c3:${item.c}">
-    <div class="art">
-      <div class="flavor-gummy" style="--c1:${item.a};--c2:${item.b};--c3:${item.c}">
-        <div class="blob"></div><div class="shine"></div><div class="fruit"></div><div class="leaf"></div>
-      </div>
-    </div>
-    <div class="product-chip">Sabor</div>
-  </div>`;
+  return `<div class="photo"><div class="photo-grid bg-flavor pos-${item.img}"></div><div class="product-chip">Sabor</div></div>`;
 }
 function card(item,i){
   const selected = (screen===0 ? selection.product : selection.flavor)===item.id;
