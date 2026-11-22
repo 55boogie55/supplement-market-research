@@ -1,30 +1,26 @@
-# ORVAE — Votação de duas perguntas
+# ORVAE — Votação de duas perguntas (opções atualizadas)
 
 ## Estrutura
-- `index.html`: landing page, animações, duas perguntas e integração Supabase num **único ficheiro HTML**. CSS e JavaScript incluídos no próprio ficheiro.
-- `supabase-setup.sql`: cria a tabela `public.orvae_votes` e a função `public.submit_orvae_vote`.
+- `index.html`: landing page, animações, duas perguntas e integração Supabase num único ficheiro HTML.
+- `supabase-setup.sql`: SQL original da V2, mantido por compatibilidade.
 
-## Fluxo
-1. Escolher 1 de 8 categorias de suplementos; a página muda imediatamente para a pergunta de sabores.
-2. Escolher 1 de 12 sabores e carregar em **Enviar o meu voto**.
-3. Surge a confirmação só depois de o Supabase responder com sucesso.
+## Opções disponíveis
+**Suplementos (7):** Creatina, Multivitamínico, Magnésio, Ómega-3, Colagénio, Vitamina D, Ashwagandha.
 
-## Publicar no GitHub Pages
-1. Colocar `index.html` na **raiz da branch main** do repositório GitHub Pages (não colocar o ZIP, nem um segundo HTML).
-2. Settings > Pages > Deploy from a branch > main > /(root).
-3. Verificar Actions e atualizar o browser sem cache (`Ctrl+Shift+R`).
+**Sabores (8):** Mirtilo, Frutos vermelhos, Laranja, Limão, Morango, Manga, Maracujá, Baunilha.
 
-## Preparar Supabase
-1. Ir a SQL Editor do projeto `qtrmxooicythgpqfqkbg`, colar e executar `supabase-setup.sql`.
-2. O HTML já contém a URL base e a chave **publishable**, que são credenciais públicas e não autorizam ler a tabela.
-3. Nunca adicionar `service_role`, `sb_secret_` ou passwords ao HTML público.
-4. Enviar um voto de teste e verificar:
+Foram retirados: **Proteína**, **Melancia**, **Cookie**, **Chocolate**, **Sem sabor**.
+
+## Publicação
+1. Substituir apenas o `index.html` na raiz do repositório GitHub Pages (`main`).
+2. Fazer commit e push; verificar a Action do GitHub Pages.
+3. Atualizar a página no navegador com `Ctrl+Shift+R` se necessário.
+
+## Supabase
+**Não é necessário voltar a executar o SQL.** O formulário continua a usar a mesma função `submit_orvae_vote` e os mesmos identificadores das opções que permaneceram. O SQL original mantém compatibilidade com dados e restrições já existentes; retirar opções do ecrã não apaga votos anteriores.
+
+Para consultar votos recentes no SQL Editor:
 
 ```sql
 select * from public.orvae_votes order by created_at desc limit 20;
-select supplement, count(*) as votos from public.orvae_votes group by 1 order by votos desc;
-select flavor, count(*) as votos from public.orvae_votes group by 1 order by votos desc;
 ```
-
-## Nota
-O endpoint aceita votos públicos anónimos. A chave pública não é um antispam. Para campanhas com tráfego elevado, adicionar Cloudflare Turnstile / proteção de bots, rate limiting no servidor e política de privacidade conforme necessário. O identificador de submissão armazenado na sessão evita duplicações em reenvios com a mesma sessão. A lista de sabores é exploratória, não garante viabilidade de cada formulação.
