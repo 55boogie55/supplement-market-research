@@ -278,7 +278,7 @@ body.participating .canvas{margin-top:0;padding-top:54px;animation:vote-reveal .
     </div>
   </header>
   <section class="hero wrap" aria-labelledby="hero-title">
-    <div class="eyebrow">A escolha é tua · Edição 001</div>
+    <div class="eyebrow">A escolha é tua</div>
     <h1 id="hero-title">A tua próxima <em>goma favorita</em> começa aqui.</h1>
     <p>Estamos a imaginar uma nova geração de suplementos em gomas. Diz-nos qual gostavas de experimentar primeiro — e qual seria o teu sabor ideal.</p>
     <a class="hero-action" href="#votacao" data-participate>Participar <span aria-hidden="true">↗</span></a>
@@ -366,7 +366,7 @@ function render(){
       <p class="stage-intro">${isFlavor?'Imagina o teu suplemento favorito em formato de goma. Que sabor te conquistaria?':'Escolhe o tipo de suplemento que gostarias de ver primeiro numa goma premium.'}</p>
     </div>
     <div class="choices ${isFlavor?'flavor':''}">${(isFlavor?flavors:products).map(card).join('')}</div>
-    ${isFlavor?'<div class="stage-actions"><button type="button" class="secondary" data-action="back">← Alterar suplemento</button><button type="button" class="vote" id="vote" '+(!selection.flavor?'disabled':'')+'>Enviar o meu voto ↗</button></div><p class="status" id="status" role="status" aria-live="polite"></p>':'<p class="status">Escolhe um cartão para continuar. Sem compromisso.</p>'}`;
+    ${isFlavor?'<div class="stage-actions"><button type="button" class="secondary" data-action="back">← Alterar suplemento</button><button type="button" class="vote" id="vote" '+(!selection.flavor?'disabled':'')+'>Enviar o meu voto ↗</button></div><p class="status" id="status" role="status" aria-live="polite"></p>':'<p class="status">Escolhe uma opção para continuar.</p>'}`;
 }
 async function go(next){
   if(changing || posting) return;
