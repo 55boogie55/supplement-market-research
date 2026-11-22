@@ -1,1 +1,1 @@
-Substitui o teu index.html por este e copia a pasta assets para a raiz do repositório. Depois faz: git add -A && git commit -m "Atualizar Orvae com fotos premium e hover suave" && git push origin main
+Substitui o index.html atual por este e copia toda a pasta assets/ para a raiz do teu repositório. Esta versão corrige o stretch das imagens, troca os suplementos para gomas coloridas por categoria, adiciona Melatonina e mantém a landing a desaparecer ao clicar em Participar.
