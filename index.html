@@ -17,7 +17,7 @@
   --velvet:cubic-bezier(0.22, 1, 0.36, 1);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
+html{scroll-padding-top:90px}
 body{
   margin:0;
   background:var(--brown);
@@ -306,9 +306,24 @@ body.participating .top{
   transform:translate3d(0,-8px,0) scale(1.012);
 }
 
+/* Número no canto inferior direito */
 .choice .num{
-  display:block;font-size:10px;color:#9c8372;letter-spacing:.17em;font-weight:800;position:absolute;right:18px;top:17px;z-index:3
+  display:block;
+  font-size:11px;
+  color:#9c8372;
+  letter-spacing:.17em;
+  font-weight:800;
+  position:absolute;
+  right:20px;
+  bottom:26px;
+  z-index:3;
+  transition:color 0.6s ease;
 }
+.choice:hover .num,
+.choice.picked .num{
+  color:#6e4e39;
+}
+
 .card-top{position:relative;z-index:2}
 .photo{height:164px;border-radius:22px;position:relative;overflow:hidden;margin-bottom:18px;background-color:#eadfcf;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -10px 24px rgba(73,45,28,.06)}
 .photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.04) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,.08) 100%);pointer-events:none}
@@ -477,6 +492,95 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
 const nextFrame = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 const clean = (s) => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+/* Smooth Scroll com inércia para roda do rato e teclado nas páginas de votação */
+const smoothScroller = (() => {
+  let targetY = 0;
+  let currentY = 0;
+  let active = false;
+
+  const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+  function tick() {
+    if (!active) return;
+    const diff = targetY - currentY;
+    if (Math.abs(diff) < 0.4) {
+      currentY = targetY;
+      window.scrollTo(0, currentY);
+      active = false;
+      return;
+    }
+    currentY += diff * 0.085;
+    window.scrollTo(0, currentY);
+    requestAnimationFrame(tick);
+  }
+
+  function start() {
+    if (!active) {
+      active = true;
+      requestAnimationFrame(tick);
+    }
+  }
+
+  window.addEventListener('wheel', (e) => {
+    if (!document.body.classList.contains('participating')) return;
+    if (e.ctrlKey || e.metaKey) return;
+    e.preventDefault();
+    if (!active) {
+      currentY = window.scrollY;
+      targetY = currentY;
+    }
+    const delta = e.deltaMode === 1 ? e.deltaY * 36 : e.deltaMode === 2 ? e.deltaY * window.innerHeight : e.deltaY;
+    targetY = Math.max(0, Math.min(maxScroll(), targetY + delta));
+    start();
+  }, { passive: false });
+
+  window.addEventListener('keydown', (e) => {
+    if (!document.body.classList.contains('participating')) return;
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+    const step = window.innerHeight * 0.72;
+    let delta = 0;
+    if (e.key === 'ArrowDown') delta = 95;
+    else if (e.key === 'ArrowUp') delta = -95;
+    else if (e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) delta = step;
+    else if (e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) delta = -step;
+    else if (e.key === 'Home') { e.preventDefault(); smoothScroller.scrollTo(0); return; }
+    else if (e.key === 'End') { e.preventDefault(); smoothScroller.scrollTo(maxScroll()); return; }
+
+    if (delta !== 0) {
+      e.preventDefault();
+      if (!active) {
+        currentY = window.scrollY;
+        targetY = currentY;
+      }
+      targetY = Math.max(0, Math.min(maxScroll(), targetY + delta));
+      start();
+    }
+  });
+
+  window.addEventListener('scroll', () => {
+    if (!active) {
+      currentY = window.scrollY;
+      targetY = currentY;
+    }
+  }, { passive: true });
+
+  return {
+    scrollTo(y, instant = false) {
+      const clamped = Math.max(0, Math.min(maxScroll(), y));
+      if (instant) {
+        active = false;
+        currentY = clamped;
+        targetY = clamped;
+        window.scrollTo(0, clamped);
+      } else {
+        if (!active) currentY = window.scrollY;
+        targetY = clamped;
+        start();
+      }
+    }
+  };
+})();
+
 function productArt(item){
   return `<div class="photo"><img class="photo-img" src="${clean(item.image)}" alt="" loading="lazy"><div class="product-chip">${clean(item.tag)}</div></div>`;
 }
@@ -487,11 +591,11 @@ function card(item,i){
   const selected = (screen===0 ? selection.product : selection.flavor)===item.id;
   const art = screen===0 ? productArt(item) : flavorArt(item);
   return `<div class="choice-wrap" style="--n:${i};"><button class="choice${selected?' picked':''}" style="--mx:50%;--my:26%;" data-choice="${clean(item.id)}" aria-pressed="${selected}">
-    <span class="num">${String(i+1).padStart(2,'0')}</span>
     <div class="card-top">${art}</div>
     <h3>${clean(item.name)}</h3>
     <p>${clean(item.description)}</p>
     <span class="choose">${selected?'Selecionado ✓':'Escolher'}</span>
+    <span class="num">${String(i+1).padStart(2,'0')}</span>
   </button></div>`;
 }
 function render(){
@@ -519,21 +623,18 @@ async function go(next){
   if(changing || posting) return;
   changing = true;
 
-  // 1. Saída suave da etapa atual
   stage.classList.add('out');
   await wait(480);
 
   if(window.scrollY > 10){
-    window.scrollTo({top:0, behavior:'smooth'});
+    smoothScroller.scrollTo(0);
   }
 
-  // 2. Prepara entrada invisível com o novo conteúdo
   screen = next;
   stage.classList.remove('out');
   stage.classList.add('in');
   render();
 
-  // 3. Força o browser a pintar o estado inicial antes de iniciar a transição de entrada
   await nextFrame();
   stage.classList.remove('in');
 
@@ -585,19 +686,16 @@ async function enterVoting(){
   if(changing || document.body.classList.contains('participating')) return;
   changing = true;
 
-  // 1. Saída suave do Hero
   heroSection.classList.add('is-leaving');
   await wait(550);
 
-  // 2. Troca de contexto preparando a entrada suave da votação
   votingSection.classList.add('is-entering');
   votingSection.hidden = false;
   document.body.classList.add('participating');
   heroSection.classList.remove('is-leaving');
-  window.scrollTo({top:0, behavior:'instant'});
+  smoothScroller.scrollTo(0, true);
   render();
 
-  // 3. Dispara animação de entrada da votação
   await nextFrame();
   votingSection.classList.remove('is-entering');
 
@@ -608,16 +706,14 @@ async function enterVoting(){
 async function resetToHome(){
   if(changing || posting) return;
   if(!document.body.classList.contains('participating')){
-    window.scrollTo({top:0, behavior:'smooth'});
+    smoothScroller.scrollTo(0);
     return;
   }
   changing = true;
 
-  // 1. Saída suave da área de votação
   votingSection.classList.add('is-leaving');
   await wait(550);
 
-  // 2. Limpa estado e prepara entrada suave do Hero
   selection = {product:null, flavor:null};
   submitted = false;
   sessionStorage.removeItem('orvae-vote-id');
@@ -627,10 +723,9 @@ async function resetToHome(){
   votingSection.hidden = true;
   votingSection.classList.remove('is-leaving');
   document.body.classList.remove('participating');
-  window.scrollTo({top:0, behavior:'instant'});
+  smoothScroller.scrollTo(0, true);
   render();
 
-  // 3. Dispara animação de entrada do Hero
   await nextFrame();
   heroSection.classList.remove('is-entering');
 
