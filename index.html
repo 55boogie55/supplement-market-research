@@ -28,26 +28,17 @@ button:disabled{cursor:not-allowed}
 .top::before,.top::after{content:'';position:absolute;inset:-50%;pointer-events:none;border:1px solid rgba(216,187,154,.08);border-radius:50%;width:950px;height:950px;left:calc(50% - 475px);top:-700px;z-index:-1}
 .top::after{width:1450px;height:1450px;left:calc(50% - 725px);top:-950px;opacity:.6}
 header{height:88px;display:flex;align-items:center;justify-content:space-between}
-.wordmark{font:500 30px 'Playfair Display',Georgia,serif;letter-spacing:-.065em}
+.wordmark{font:500 30px 'Playfair Display',Georgia,serif;letter-spacing:-.065em;cursor:pointer}
 .header-right{display:flex;align-items:center;gap:20px}
-.header-label{font-size:10px;letter-spacing:.24em;color:#e5cbaa;font-weight:800}
-.header-cta,.hero-action,.secondary,.vote{
+.hero-action,.secondary,.vote{
   position:relative;overflow:hidden;isolation:isolate;
 }
-.header-cta::before,.hero-action::before,.secondary::before,.vote::before{
+.hero-action::before,.secondary::before,.vote::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(115deg,rgba(255,255,255,.08) 0%,rgba(241,217,191,.65) 36%,rgba(210,167,124,.95) 66%,rgba(186,136,99,.92) 100%);
-  opacity:0;transition:opacity .75s ease;
+  opacity:0;transition:opacity 0.5s ease-in-out;
   z-index:-1;
 }
-.header-cta{
-  border:1px solid #8d735e;border-radius:90px;padding:12px 20px;
-  color:white;background:linear-gradient(140deg,rgba(255,255,255,.02),rgba(255,255,255,.00));
-  font-size:12px;font-weight:700;
-  transition:color .75s ease,border-color .75s ease,transform .9s var(--soft),box-shadow .9s ease,background .75s ease;
-}
-.header-cta:hover{color:#271c16;transform:translateY(-2px);border-color:#ead4b7;box-shadow:0 14px 32px rgba(0,0,0,.18)}
-.header-cta:hover::before{opacity:1}
 
 .hero{padding:68px 0 155px;text-align:center}
 .eyebrow{display:flex;align-items:center;justify-content:center;gap:12px;color:#cbb092;font-size:10px;letter-spacing:.28em;font-weight:800;text-transform:uppercase}
@@ -58,7 +49,7 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
 .hero p{max-width:570px;color:#cfbfb3;margin:0 auto;font-size:15px;line-height:1.85}
 .hero-action{
   margin-top:32px;display:inline-flex;gap:19px;align-items:center;justify-content:center;border:1px solid #ac8467;border-radius:99px;background:transparent;color:#f6e9de;padding:17px 25px;
-  transition:color .85s ease,transform .95s var(--soft),box-shadow .95s ease,border-color .8s ease;
+  transition:color 0.5s ease-in-out, transform 0.6s var(--soft), box-shadow 0.6s ease, border-color 0.5s ease-in-out;
   font-weight:700;
 }
 .hero-action:hover{color:#261a14;transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.22);border-color:#e7ccb0}
@@ -81,7 +72,7 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
   text-align:left;background:linear-gradient(180deg,#fffefb 0%,#f7f1e8 100%);
   border-radius:28px;box-shadow:0 10px 28px rgba(67,46,30,.05), inset 0 1px 0 rgba(255,255,255,.65);
   position:relative;isolation:isolate;overflow:hidden;transform:translate3d(0,0,0);
-  transition:transform 1.55s cubic-bezier(.22,.8,.2,1),box-shadow 1.3s ease,border-color 1.05s ease,background 1.05s ease;
+  transition:transform 0.6s cubic-bezier(.22,.8,.2,1), box-shadow 0.6s cubic-bezier(.22,.8,.2,1), border-color 0.5s ease, background 0.5s ease;
   animation:card-in .7s var(--ease) both;animation-delay:calc(var(--n)*65ms);
 }
 .choice::before{
@@ -89,12 +80,12 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
   background:
     radial-gradient(circle at var(--mx,50%) var(--my,26%),rgba(238,201,160,.43),transparent 34%),
     radial-gradient(circle at 86% 9%,rgba(255,255,255,.8),transparent 25%);
-  opacity:0;transition:opacity .9s ease;z-index:0;pointer-events:none
+  opacity:0;transition:opacity 0.6s ease;z-index:0;pointer-events:none
 }
 .choice::after{
   content:'';position:absolute;left:16px;right:16px;bottom:-36px;height:70px;border-radius:999px;
   background:radial-gradient(ellipse at center,rgba(81,49,29,.13),transparent 68%);
-  opacity:0;filter:blur(10px);transform:scale(.86);transition:opacity 1.15s ease,transform 1.35s var(--soft);pointer-events:none;z-index:0
+  opacity:0;filter:blur(10px);transform:scale(.86);transition:opacity 0.6s ease,transform 0.6s var(--soft);pointer-events:none;z-index:0
 }
 .choice:hover::before,.choice:focus-visible::before{opacity:1}
 .choice:hover::after,.choice:focus-visible::after{opacity:1;transform:scale(1)}
@@ -127,7 +118,7 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
 }
 .product-jar,.flavor-gummy{
   position:relative;transform:translateY(0) rotate(var(--rot,-6deg));
-  transition:transform 1.05s var(--soft), filter .9s ease;
+  transition:transform 0.6s var(--soft), filter .6s ease;
   filter:drop-shadow(0 14px 18px rgba(64,33,15,.18));
 }
 .choice:hover .product-jar,.choice:hover .flavor-gummy{transform:translateY(-6px) rotate(0deg) scale(1.03)}
@@ -187,7 +178,7 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
 }
 .photo{height:164px;border-radius:22px;position:relative;overflow:hidden;margin-bottom:18px;background-color:#eadfcf;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -10px 24px rgba(73,45,28,.06)}
 .photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.04) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,.08) 100%);pointer-events:none}
-.photo-img{width:100%;height:100%;display:block;object-fit:cover;object-position:center center;transform:scale(1.02);transition:transform 1.45s var(--soft),filter 1.15s ease;filter:saturate(1.03) contrast(1.02)}
+.photo-img{width:100%;height:100%;display:block;object-fit:cover;object-position:center center;transform:scale(1.02);transition:transform 0.8s var(--soft),filter 0.6s ease;filter:saturate(1.03) contrast(1.02)}
 .choice:hover .photo-img{transform:scale(1.06)}
 .product-chip{
   position:absolute;left:16px;bottom:14px;display:inline-flex;align-items:center;gap:8px;
@@ -200,7 +191,7 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
 .choose{
   position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 13px;border-radius:40px;
   background:#eee9df;color:#584c40;font-size:11px;font-weight:700;
-  transition:background .8s ease,color .8s ease,transform .95s var(--soft),box-shadow .8s ease
+  transition:background 0.5s ease, color 0.5s ease, transform 0.6s var(--soft), box-shadow 0.5s ease
 }
 .choice:hover .choose{background:#d8bea0;color:#2b1d15;transform:translateX(3px);box-shadow:0 10px 18px rgba(88,67,48,.08)}
 
@@ -212,13 +203,13 @@ header{height:88px;display:flex;align-items:center;justify-content:space-between
 .stage-actions{margin-top:34px;display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap}
 .secondary{
   background:transparent;border:1px solid #c5b6a4;border-radius:99px;padding:15px 23px;color:#594d40;font-weight:700;
-  transition:color .75s ease,transform .85s var(--soft),box-shadow .8s ease,border-color .8s ease,background .7s ease
+  transition:color 0.5s ease, transform 0.6s var(--soft), box-shadow 0.6s ease, border-color 0.5s ease, background 0.5s ease
 }
 .secondary:hover{color:#2a1d15;border-color:#ddcab4;transform:translateY(-2px);box-shadow:0 12px 28px rgba(67,46,30,.08)}
 .secondary:hover::before{opacity:1}
 .vote{
   border:0;border-radius:99px;padding:16px 35px;background:#b7a68d;color:#291d16;font-weight:800;
-  transition:transform .85s var(--soft),box-shadow .85s ease,color .75s ease,background .75s ease
+  transition:transform 0.6s var(--soft), box-shadow 0.6s ease, color 0.5s ease, background 0.5s ease
 }
 .vote:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 27px #73503630}
 .vote:hover::before{opacity:1}
@@ -249,7 +240,6 @@ body.participating .canvas{margin-top:0;padding-top:54px;animation:vote-reveal .
 @media (max-width:850px){
   .wrap{width:calc(100% - 40px)}
   header{height:76px}
-  .header-label{display:none}
   .hero{padding-top:50px;padding-bottom:130px}
   .choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -257,7 +247,6 @@ body.participating .canvas{margin-top:0;padding-top:54px;animation:vote-reveal .
   .wrap{width:calc(100% - 24px)}
   .hero h1{font-size:clamp(40px,12vw,64px)}
   .hero p{font-size:14px}
-  .header-cta{padding:11px 16px}
   .choices{grid-template-columns:1fr}
   .choice{min-height:292px}
   .flavor .choice{min-height:252px}
@@ -271,10 +260,9 @@ body.participating .canvas{margin-top:0;padding-top:54px;animation:vote-reveal .
 <body>
 <div class="top">
   <header class="wrap">
-    <div class="wordmark">Orvae</div>
+    <a class="wordmark" data-home>Orvae</a>
     <div class="header-right">
-      <div class="header-label">EM BREVE · GOMAS PREMIUM</div>
-      <a class="header-cta" href="#votacao" data-participate>Participar ↗</a>
+      <a class="header-cta" href="#votacao" data-participate style="display: none;">Participar ↗</a>
     </div>
   </header>
   <section class="hero wrap" aria-labelledby="hero-title">
@@ -407,14 +395,18 @@ stage.addEventListener('click', async e=>{
   }
   if(e.target.closest('[data-action="back"]')){ await go(0); return; }
   if(e.target.closest('[data-action="restart"]')){
-    selection={product:null,flavor:null}; submitted=false; sessionStorage.removeItem('orvae-vote-id'); screen=0; render();
-    document.getElementById('votacao').hidden=true;
-    document.body.classList.remove('participating');
-    window.scrollTo({top:0,behavior:reduceMotion?'instant':'smooth'});
+    resetToHome();
     return;
   }
   if(e.target.closest('#vote')) await sendVote();
 });
+
+function resetToHome(){
+  selection={product:null,flavor:null}; submitted=false; sessionStorage.removeItem('orvae-vote-id'); screen=0; render();
+  document.getElementById('votacao').hidden=true;
+  document.body.classList.remove('participating');
+  window.scrollTo({top:0,behavior:reduceMotion?'instant':'smooth'});
+}
 
 async function sendVote(){
   if(posting || submitted || !selection.product || !selection.flavor) return;
@@ -463,6 +455,11 @@ document.querySelectorAll('[data-participate]').forEach(link=>link.addEventListe
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     voting.scrollIntoView({behavior:reduceMotion?'instant':'smooth',block:'start'});
   }));
+}));
+
+document.querySelectorAll('[data-home]').forEach(link=>link.addEventListener('click',event=>{
+  event.preventDefault();
+  resetToHome();
 }));
 </script>
 </body>
